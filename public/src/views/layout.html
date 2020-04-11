@@ -7,7 +7,8 @@
           <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
         </a>
       </li>
-      <!--<li class="layui-nav-item layui-this layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+
+      <li class="layui-nav-item layui-this layui-hide-xs layui-hide-sm layui-show-md-inline-block">
         <a lay-href="" title="">
           控制台
         </a>
@@ -25,7 +26,7 @@
       <li class="layui-nav-item layui-hide-xs" lay-unselect>
         <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search/keywords="> 
       </li>
-      -->
+
     </ul>
     <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
 
@@ -38,7 +39,7 @@
         <script type="text/html" template lay-url="./json/user/session.js" 
         lay-done="layui.element.render('nav', 'layadmin-layout-right');">
           <a href="javascript:;">
-            <cite>谢谢谢</cite>
+            <cite>Test</cite>
           </a>
           <dl class="layui-nav-child">
             <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
@@ -55,11 +56,11 @@
   <!-- 侧边菜单 -->
   <div class="layui-side layui-side-menu">
     <div class="layui-side-scroll">
-      <script type="text/html" template lay-url="./json/menu.js?v={{ layui.admin.v }}" 
+      <script type="text/html" template lay-url="/json/menu.js"
       lay-done="layui.element.render('nav', 'layadmin-system-side-menu');" id="TPL_layout">
       
         <div class="layui-logo" lay-href="">
-          <span><b>Yu</b>jiso</span>
+          <span><b>Layui</b>Admin</span>
         </div>
         
         <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
