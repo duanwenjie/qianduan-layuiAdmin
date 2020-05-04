@@ -22,7 +22,7 @@ layui.define(['table', 'form'], function(exports){
     ,page: true
     ,limit: 30
     ,height: 'full-320'
-    ,text: '对不起，加载出现异常！'
+    ,text:{none: '暂无相关数据!' }
   });
   
   //监听工具条
@@ -79,7 +79,7 @@ layui.define(['table', 'form'], function(exports){
       ,{field: 'check', title:'审核状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
     ]]
-    ,text: '对不起，加载出现异常！'
+    ,text:{none: '暂无相关数据!' }
   });
   
   //监听工具条
@@ -133,7 +133,7 @@ layui.define(['table', 'form'], function(exports){
       ,{field: 'descr', title: '具体描述'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
     ]]
-    ,text: '对不起，加载出现异常！'
+    ,text:{none: '暂无相关数据!' }
   });
   
   //监听工具条

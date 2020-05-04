@@ -1,0 +1,363 @@
+<style>
+    span{
+        height: 50px;
+    }
+    .xm-select-title{
+        width: 350px;
+    }
+
+</style>
+<div class="layui-fluid">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb" style="margin-bottom: 10px">
+        <a href="">首页</a>
+        <a href="/#/module/table">表格|TABLE</a>
+        <a><cite>正文</cite></a>
+    </div>
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" id="LAY-list-form" lay-filter="LAY-list-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">SKU</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sku" placeholder="请输入SKU" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">操作人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="operator" placeholder="请输入操作人" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" title="高级下拉框，搜索匹配">城市：</label>
+                    <div class="layui-input-block">
+                        <select name="city" lay-search lay-filter="select_city">
+                            <option value="">请选择</option>
+                            <option value="1">北京</option>
+                            <option value="2">长沙</option>
+                            <option value="3">衡阳</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label" title="普通下拉框">区县：</label>
+                    <div class="layui-input-block">
+                        <select name="area" lay-filter="select_area" type="select" xm-select="select1">
+                            <option value="">请选择</option>
+                            <option value="1">蒸湘区</option>
+                            <option value="2">雁峰区</option>
+                            <option value="3">开发新区</option>
+                            <option value="4">领湖区</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label" title="普通下拉框">一线城市：</label>
+                    <div class="layui-input-block">
+                        <select name="city2" xm-select="select2" xm-select-search="" xm-select-radio="">
+                            <option value="1" disabled="disabled">北京</option>
+                            <option value="2" selected="selected">上海</option>
+                            <option value="3">广州</option>
+                            <option value="4" selected="selected">深圳</option>
+                            <option value="5">天津</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" title="后台下拉框">后台城市：</label>
+                    <div class="layui-input-block" >
+                        <select name="city" xm-select="select4">
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" title="省市区联动">省市区：</label>
+                    <div class="layui-input-block" style="width: 350px">
+                        <select name="city3" xm-select="select3">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin search" lay-submit lay-filter="LAY-list-search">搜索</button>
+                    <button class="layui-btn layui-btn-primary reset">重置</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-card-body">
+            <table id="LAY-list" lay-filter="LAY-list"></table>
+            <br>
+            <!--<span>多级表头|局部渲染</span>-->
+            <!--<table id="LAY-list2" lay-filter="LAY-list2"></table>-->
+            <script type="text/html" id="table-useradmin-webuser">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">禁用</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
+        <button class="layui-btn layui-btn-sm" lay-event="select-add">下拉框添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="select-delete">下拉框删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="select-xianshi">下拉框显示</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    layui.use(['admin', 'table', 'form','toolJ','element','laytpl'], function () {
+        var host=window.location.href;
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , toolJ = layui.toolJ
+            , laytpl = layui.laytpl
+            , form = layui.form
+            , element = layui.element
+            , formSelects = layui.formSelects
+            , router = layui.router()
+            , citys = [];
+
+        table.render({
+            elem: "#LAY-list"
+            ,id: 'LAY-list'
+            ,url: "/index/Module/table"
+            ,method: 'post'
+            ,cellMinWidth: 80//全局定义常规单元格的最小宽度
+            ,defaultToolbar: ['filter', 'print', 'exports', {
+                title: '提示' //标题
+                ,layEvent: 'tishi' //事件名，用于 toolbar 事件中使用
+                ,icon: 'layui-icon-tips' //图标类名
+            }]
+            ,toolbar: '#toolbar'//开启工具栏
+            ,loading:true
+            ,title: 'SKU列表'
+            ,cols: [[
+                {type: "checkbox", LAY_CHECKED:false, align: "center",fixed: "left",totalRowText:'合计：'},
+//                {type: "radio",align: "center"},
+//                {type: "numbers",align: "center"},
+//                {type: "space",align: "center",totalRowText:'合计：'},
+               {field: "sku",title: "SKU",align: "center",templet: function(d){
+                    return '<a data-jy-act="openTab" target="_blank" ' +
+                        'href="/sku/detail/index?sku='+d.sku+'" style="color: #0078d7;">'+ d.sku +'</a>'
+                }}
+                ,{field: "name",title: "SKU名称",align: "left", templet: '<div><a target="_blank" ' +
+                'href="/sku/detail/index?sku={{d.sku}}" style="color: #0078d7;">{{d.name}}</a> </div>'}
+                ,{field: "reference_price",title: "参考价",align: "center", totalRow:true, edit:true, event:'price'}
+                ,{field: "statusName",title: "状态",align: "center", totalRow:true}
+                ,{field: "salesStatusName",title: "销售状态",align: "center"}
+                ,{field: "operator",title: "操作者",align: "center"}
+                ,{field: "creation_time",title: "创建时间",align: "center"}
+                ,{field:'',title: '操作', width: 165, align: 'center', fixed: 'right', toolbar: '#barDemo'}
+            ]]
+            ,initSort: {
+                field: 'sku' //排序字段，对应 cols 设定的各字段名
+                ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+//            ,height: 'full-20' // 表格高度
+//            ,skin: 'row' // line （行边框风格）row （列边框风格）nob （无边框风格）
+//            ,even: true //开启隔行背景
+            ,size: 'sm' //小尺寸的表格 sm,lg
+            ,totalRow: true // 合计按钮
+            ,page: true
+            ,limit: 15
+            ,limits: [10, 15, 20, 25, 30,50,100]
+            ,done:function (d, curr, count) {
+//                console.log(layui.v);
+//                console.log(d);console.log(curr);
+//                layer.closeAll();
+//                var sku=[];
+//                for (var i in d.data){
+//                    sku.push(d.data[i]['sku']);
+//                }
+//                getImg(sku);
+            }
+//            ,parseData: function (res) { //res 解析数据， 即为原始返回的数据
+//                return {
+//                    "code": res.status, //解析接口状态
+//                    "msg": res.message, //解析提示文本
+//                    "count": res.total, //解析数据长度
+//                    "data": res.data.item //解析数据列表
+//                };
+//            }
+            ,text: {
+                "none":"暂无数据！"
+            }
+        });
+
+        table.render({
+            elem: "#LAY-list2"
+            ,id: 'LAY-list2'
+            ,url: "/index/Module/table"
+            ,method: 'post'
+            ,cellMinWidth: 80//全局定义常规单元格的最小宽度
+            ,loading:true
+            ,title: 'SKU列表'
+            ,cols: [[
+                {field: "",title: "SKU信息",align: "center",colspan:4}
+                ,{field: "",title: "状态信息",align: "center",colspan:2}
+                ,{field: "",title: "操作信息",align: "center",colspan:3}
+            ]
+                ,[
+                    {type: "checkbox", LAY_CHECKED:false, align: "center",fixed: "left",totalRowText:'合计：'},
+                    {field: "sku",title: "SKU",align: "center",templet: function(d){
+                        return '<a data-jy-act="openTab" target="_blank" ' +
+                            'href="/sku/detail/index?sku='+d.sku+'" style="color: #0078d7;">'+ d.sku +'</a>'
+                    }}
+                    ,{field: "name",title: "SKU名称",align: "left", templet: '<div><a target="_blank" ' +
+                    'href="/sku/detail/index?sku={{d.sku}}" style="color: #0078d7;">{{d.name}}</a> </div>'}
+                    ,{field: "reference_price",title: "参考价",align: "center", totalRow:true, edit:true, event:'price'}
+                    ,{field: "statusName",title: "状态",align: "center", totalRow:true}
+                    ,{field: "salesStatusName",title: "销售状态",align: "center"}
+                    ,{field: "operator",title: "操作者",align: "center",style:"color: #D61A19;"}
+                    ,{field: "creation_time",title: "创建时间",align: "center"}
+                    ,{field:'',title: '操作', width: 165, align: 'center', fixed: 'right', toolbar: '#barDemo'}
+                ]]
+//            ,cols1:  [[ //标题栏
+//                {field: 'sku', title: '联系人', rowspan: 2} //rowspan即纵向跨越的单元格数
+//                ,{field: 'name', title: '金额',rowspan: 2}
+//                ,{align: 'center', title: '地址', colspan: 3} //colspan即横跨的单元格数，这种情况下不用设置field和width
+//            ], [
+//                {field: 'statusName', title: '省'}
+//                ,{field: 'salesStatusName', title: '市'}
+//                ,{field: 'operator', title: '详细'}
+//            ]]
+            ,initSort: {
+                field: 'sku' //排序字段，对应 cols 设定的各字段名
+                ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            ,size: 'sm' //小尺寸的表格 sm,lg
+//            ,totalRow: true // 合计按钮
+            ,page: true
+            ,limit: 5
+            ,limits: [10, 15, 20, 25, 30,50,100]
+            ,done:function (d, curr, count) {
+                $('.laytable-cell-group').css({ color: "#f5f5f5", background: "#ee9aa3" });
+            }
+            ,text: {
+                "none":"暂无数据！"
+            }
+        });
+
+        //多选
+//        formSelects.render();
+//        var city1 = {"1":"衡阳市","2":"蒸湘区"};
+//        var city2 = {"1":"深圳市","2":"耒阳市"};
+//        toolJ.formSelectsArr(city1, 'select1',[1]);
+//        toolJ.formSelectsArr(city2, 'select2',[2]);
+
+        formSelects.data('select3', 'server', {
+            url: '/index/Module/getCitys',
+            linkage: true,
+            linkageWidth: 100   //代表每一级别的宽度, 默认是100
+        });
+
+        //server
+        toolJ.ajax1({"type":2},'/index/Module/getCitys',function (data) {
+            citys = data.data;
+            toolJ.formSelectsArr2(citys,'select4',true);
+        });
+
+
+        /*== 监听表头操作 ==*/
+        table.on('toolbar(LAY-list)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'add':
+                    layer.msg('添加');
+                    console.log(citys);
+                    break;
+                case 'delete':
+                    layer.msg('删除');
+                    break;
+                case 'update':
+                    layer.msg('编辑');
+                    break;
+                case 'tishi':
+                    layer.msg('提示语句');
+                    break;
+                case 'select-add':
+                    formSelects.value('select1', [2, 4], true); // 追加value为2和4的option, 如果该值已选中则跳过, 该值未选中则选中
+                    break;
+                case 'select-delete':
+                    formSelects.value('select1', [2, 4], false);// 删除value为2和4的option, 如果该值没有选中则跳过, 该值被选中则取消选中
+                    break;
+                case 'select-xianshi':
+                    var res = formSelects.value('select1','nameStr'); // all val valStr name nameStr
+                    console.log(res);
+                    break;
+            }
+        });
+        /*== 监听表内操作 ==*/
+        table.on('tool(LAY-list)', function(obj){
+            switch(obj.event){
+                case 'price':
+                    layer.msg('价格');
+                    break;
+                case 'del':
+                    layer.msg('删除');
+                    break;
+                case 'detail':
+                    layer.msg('详情');
+                    break;
+                case 'edit':
+                    layer.msg('编辑');
+                    break;
+            }
+        });
+
+        table.on('checkbox(LAY-list)', function(obj){
+            console.log(obj.checked); //当前是否选中状态
+            console.log(obj.data); //选中行的相关数据
+            console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+        });
+
+        //监听行单击事件
+        table.on('row(LAY-list)', function(obj){
+//            console.log(obj.tr) //得到当前行元素对象
+//            console.log(obj.data) //得到当前行数据
+//            obj.del(); //删除当前行
+            //obj.update(fields) //修改当前行数据
+        });
+
+        /*== 监听多选框 ==*/
+        table.on('input(LAY-list)', function(obj){
+            console.log(obj.checked); //当前是否选中状态
+            console.log(obj.data); //选中行的相关数据
+            console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+        });
+
+        /*== 监听编辑 ==*/
+        table.on('edit(LAY-list)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            console.log(obj.value); //得到修改后的值
+            console.log(obj.field); //当前编辑的字段名
+            console.log(obj.data); //所在行的所有相关数据
+        });
+
+    })
+
+
+
+</script>
+
+

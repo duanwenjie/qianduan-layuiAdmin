@@ -2,9 +2,11 @@
 
 namespace app\common\behavior;
 
+use think\Db;
+
 /**
  * 日志
- * @author xjy
+ * @author dwj
  */
 class LogWriteDone
 {
@@ -12,22 +14,43 @@ class LogWriteDone
     public function run(&$params)
     {
         if(!empty($params['error'])){
+            if(empty(Init::$logId)){
+                $request=\think\Request::instance();
+                $log = [];
+                $log['user'] = CN_NAME??(UID??'');
+                $log['module'] =$request->module();
+                $log['controller'] =$request->controller();
+                $log['action']=$request->action();
+                $log['ip'] = $request->ip();
+                $log['ctime']=TIME;
+                $param=$request->param();
+                $log['data']=json_encode($param,JSON_UNESCAPED_UNICODE);
+                Init::$logId=Db::table('sys_log')->insertGetId($log);
+            }
+        }else{
+            if(empty(Init::$logId)){
+                return [];
+            }
+        }
+
+        if(empty($params)){
+            $params=[];
+        }
+        $t = number_format(round(microtime(true) - THINK_START_TIME, 10),2);
+        $log = [];
+        $log['time']=$t;
+        if(!empty($params)){
             $request=\think\Request::instance();
-            $time=date('Y-m-d H:i:s');
             $param=$request->param();
-            $log = [];
-            $log['user'] = CN_NAME??(NAME??'');
-            $log['module'] =$request->module();
-            $log['controller'] =$request->controller();
-            $log['action']=$request->action();
-            $log['ip'] = $request->ip();
-            $log['ctime']=$time;
-            $log['type']=500;
+            if(!empty($params['error'])){
+                $log['type']=500;
+            }
             $data=[];
             $data['param']=$param;
-            $data['error']=$params;
-            $log['data']=json_encode($data,JSON_UNESCAPED_UNICODE);;
-            db('access_log')->insert($log);
+            $data['log']=$params;
+            $data['time']=$t;
+            $log['data']=json_encode($data,JSON_UNESCAPED_UNICODE);
         }
+        Db::table('sys_log')->where(['id'=>Init::$logId])->update($log);
     }
 }

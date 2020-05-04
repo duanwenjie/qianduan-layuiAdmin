@@ -1,5 +1,4 @@
 <?php
-
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -10,50 +9,66 @@
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 // 应用公共文件
-
 /**
  * 退出并且返回JSON数据
  * @param string $state 状态码
  * @param string $msg 消息
- * @param array $data 数据
+ * @param array  $data 数据
+ * @author dwj
  */
-function exit_json($state = '000001', $msg = '操作成功', $data = NULL)
+function exitJson($code = 0, $msg = '操作成功', $data = null)
 {
     $jdata = array();
-    $jdata['state'] = $state;
+    $jdata['code'] = $code;
     $jdata['msg'] = $msg;
-    !empty($data) && $jdata['data'] = $data;
-    exit_json_data($jdata);
+    if (!empty($data['count'])) $jdata['count'] = $data['count'];
+    if (!empty($data['list'])) $jdata['data'] = $data['list'];
+    if (!empty($data['totalRow'])) $jdata['totalRow'] = $data['totalRow']; // 统计数据 {'field' : 'value'}
+    exitJson_data($jdata);
 }
 
 /**
  * 退出并且返回JSON数据
- * @param array $data 数据
+ * @param $data
+ * @author dwj
  */
-function exit_json_data($data)
+function exitJson_data($data)
 {
-    exit(json_encode($data,JSON_UNESCAPED_UNICODE));
+    exit(json_encode($data, JSON_UNESCAPED_UNICODE));
 }
-function returnJson($data)
+
+/**
+ * 返回格式化数组
+ * @param string $code
+ * @param string $msg
+ * @param array  $data
+ * @param null   $count
+ * @return array
+ * @author dwj
+ */
+function returnArr($code = '1', $msg = '成功', $data = [], $count = null)
 {
-    exit(json_encode($data,JSON_UNESCAPED_UNICODE));
-}
-function returnRes($state = '000001', $msg = '操作成功', $data = NULL)
-{
-    $res= array();
-    $res['state'] = $state;
-    $res['msg'] = $msg;
+    $res = array();
+    $res['code'] = $code;
+    if (is_array($msg)){
+        $res['msg'] = join('<br/>', $msg);
+    }else{
+        $res['msg'] = $msg;
+    }
     $res['data'] = $data;
+    if (isset($count)){
+        $res['count'] = $count;
+    }
     return $res;
 }
 
 /**
  * 模拟CURL请求
- * @param string $url 路径
+ * @param string       $url 路径
  * @param array|string $data 数据
- * @param array $httpHeader 请求头部信息
- * @param string $method 方式
- * @param int $timeout 超时时间
+ * @param array        $httpHeader 请求头部信息
+ * @param string       $method 方式
+ * @param int          $timeout 超时时间
  * @return string
  */
 function curl($url, $data, $httpHeader = array(), $method = 'POST', $timeout = 300)
@@ -61,42 +76,43 @@ function curl($url, $data, $httpHeader = array(), $method = 'POST', $timeout = 3
     $ch = curl_init();
     $timeout = $timeout <= 0 ? 300 : $timeout;
     curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-    if (strtoupper($method) == 'POST') {
+    if (strtoupper($method) == 'POST'){
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    } else {
+    }else{
         curl_setopt($ch, CURLOPT_URL, $url . '?' . http_build_query($data));
     }
-    if (!empty($httpHeader) && is_array($httpHeader)) {
+    if (!empty($httpHeader) && is_array($httpHeader)){
         curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeader);
     }
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     // https请求 不验证证书和hosts
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
     $response = curl_exec($ch);
     $http = curl_getinfo($ch);
-    $error=curl_error($ch);
+    $error = curl_error($ch);
     curl_close($ch);
-    if(empty($error)&&$http['http_code']==200){
+    if (empty($error) && $http['http_code'] == 200){
         return $response;
     }else{
-        if($timeout!=1){
-            trace("http_code:{$http['http_code']} error:{$error}",'error');
+        if ($timeout != 1){
+            trace("http_code:{$http['http_code']} error:{$error}", 'error');
         }
         return $response;
     }
 }
+
 //多线程curl请求
-function curlMulti($url,$data,$timeout=300)
+function curlMulti($url, $data, $timeout = 300)
 {
     $res = array();
     $mh = curl_multi_init();//创建多个curl语柄
-    $count=count($data);
-    for ($k = 0; $k < $count; $k++) {
+    $count = count($data);
+    for($k = 0; $k < $count; $k ++){
         $json = json_encode($data[$k]);
         $conn[$k] = curl_init($url);
         curl_setopt($conn[$k], CURLOPT_TIMEOUT, $timeout);//设置超时时间
@@ -114,21 +130,21 @@ function curlMulti($url,$data,$timeout=300)
     }
     // 执行批处理句柄
     $active = null;
-    $data=[];
-    do {
+    $data = [];
+    do{
         curl_multi_exec($mh, $active);//当无数据，active=true
-    } while ($active >0);//当正在接受数据时
-    for ($k = 0; $k < $count; $k++) {
+    }while ($active > 0);//当正在接受数据时
+    for($k = 0; $k < $count; $k ++){
         $http = curl_getinfo($conn[$k]);
-        $error=curl_error($conn[$k]);
-        if(empty($error)&&$http['http_code']==200){
+        $error = curl_error($conn[$k]);
+        if (empty($error) && $http['http_code'] == 200){
             $res[$k] = curl_multi_getcontent($conn[$k]);//获得返回信息
-            $v1=json_decode($res[$k],true);
-            if(is_array($v1)&&isset($v1['state'])&&$v1['state'] == '000001'&&!empty($v1['data'])){
-                $data=array_merge($data,$v1['data']);
+            $v1 = json_decode($res[$k], true);
+            if (is_array($v1) && isset($v1['state']) && $v1['state'] == '000001' && !empty($v1['data'])){
+                $data = array_merge($data, $v1['data']);
             }
         }else{
-            trace("http_code:{$http['http_code']} error:{$error}",'error');
+            trace("http_code:{$http['http_code']} error:{$error}", 'error');
         }
         curl_multi_remove_handle($mh, $conn[$k]);//释放资源
         curl_close($conn[$k]);//关闭语柄
@@ -136,6 +152,7 @@ function curlMulti($url,$data,$timeout=300)
     curl_multi_close($mh);
     return $data;
 }
+
 /**
  * 获取毫秒
  * @param date $datetime 日期，如：2018-11-07
@@ -144,30 +161,20 @@ function curlMulti($url,$data,$timeout=300)
 function get_millitime($datetime)
 {
     $time = strtotime($datetime);
-    if ($time <= 0) {
+    if ($time <= 0){
         return '0';
     }
     $time .= '000';
     return $time;
 }
+
 //如果时间没有返回空
 function changeTime($datetime)
 {
-    if($datetime=='1970-01-01 00:00:00'||$datetime=='0000-00-00 00:00:00'){
+    if ($datetime == '1970-01-01 00:00:00' || $datetime == '0000-00-00 00:00:00'){
         return '';
     }
     return $datetime;
-}
-/**
- * 是否热销产品
- * @param int $number 销量
- * @return bool
- */
-function is_hot_sale($number)
-{
-    $hotsale = config('hotsale');
-    $result = bccomp($number, $hotsale);
-    return ($result === 1) ? true : false;
 }
 
 //图片上传处理
@@ -185,57 +192,56 @@ function upload_file($file)
     curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:multipart/form-data']);
     $result = curl_exec($curl);
     $error = curl_error($curl);
-    if (empty($error)) {
-        $res=json_decode($result, true);
-        $res['data'][0]['awsPath']=$res['data'][0]['path'];
+    if (empty($error)){
+        $res = json_decode($result, true);
+        $res['data'][0]['awsPath'] = $res['data'][0]['path'];
         return $res;
-    } else {
-        trace($error,'error');
-        return ['state'=>500,'msg'=>$error];
-    }
-}
-//校验参数
-function checkParam($param,$rule,$key=''){
-    if(!empty($key)){
-        if(!isset($param[$key])){
-            exit_json('000501',"{$key}不存在");
-        }
-        $val=$param[$key];
     }else{
-        $val=$param;
+        trace($error, 'error');
+        return ['state' => 500, 'msg' => $error];
     }
-    foreach ($rule as $v){
-        if($v=='e'){
-            if(empty($val)){
-                exit_json('000501',"{$key}参数不能为空");
-            }
-        }
-        if($v=='a'){
-            if(!is_array($val)){
-                exit_json('000501',"{$key}参数必须为数组");
-            }
-        }
-        if($v=='i'){
-            if (!preg_match('/^[1-9][0-9]*$/', $val)) {
-                exit_json('000501',"{$key}参数必须为正整数");
-            }
-        }
-    }
-    return $val;
 }
-//处理接口返回
-function curlData($res,$log=''){
-    $json = json_decode($res, true);
-    if(is_array($json)&&isset($json['state'])&&$json['state'] !== '000001'){
-        $backtrace=debug_backtrace(false, 1);
-        $file='';
-        if(!empty($backtrace[0])&&!empty($backtrace[0]['file'])&&!empty($backtrace[0]['line'])){
-            $file="file=>  {$backtrace[0]['file']}   line=>  {$backtrace[0]['line']} ".PHP_EOL;
+
+/**
+ * 验证参数
+ * @param       $param
+ * @param array $checkField
+ * @param bool  $is_need_return
+ * @return array
+ * @author dwj
+ */
+function checkParam($param, $checkField = [], $is_need_return = false)
+{
+    if ($is_need_return){
+        foreach($checkField as $field){
+            if (!isset($param[$field]) || (empty($param[$field]) && $param[$field] != '0')){
+                return array("state" => "000100", "msg" => $field . '必填');
+            }
         }
-         \think\Log::record($file.$res.$log, 'error');
+        return array("state" => "000001", "msg" => '');
+    }else{
+        foreach($checkField as $field){
+            if (!isset($param[$field]) || (empty($param[$field]) && $param[$field] != '0')){
+                exitJson('000100', $field . '必填');
+            }
+        }
+    }
+}
+
+//处理接口返回
+function curlData($res, $log = '')
+{
+    $json = json_decode($res, true);
+    if (is_array($json) && isset($json['state']) && $json['state'] !== '000001'){
+        $backtrace = debug_backtrace(false, 1);
+        $file = '';
+        if (!empty($backtrace[0]) && !empty($backtrace[0]['file']) && !empty($backtrace[0]['line'])){
+            $file = "file=>  {$backtrace[0]['file']}   line=>  {$backtrace[0]['line']} " . PHP_EOL;
+        }
+        \think\Log::record($file . $res . $log, 'error');
         return [];
     }else{
-        if(isset($json['data'])){
+        if (isset($json['data'])){
             return $json['data'];
         }else{
             return [];

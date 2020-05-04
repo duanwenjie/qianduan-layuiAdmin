@@ -1,0 +1,112 @@
+<div class="layui-fluid">
+    <div class="layui-breadcrumb jy-breadcrumb">
+    </div>
+    <div class="layui-card roleForm layui-fluid">
+
+    </div>
+</div>
+<script id="roleForm" type="text/html">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名称</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input field-name" name="name" lay-verify="required" autocomplete="off" placeholder="请输入角色名称">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色状态</label>
+            <div class="layui-input-inline">
+                <input type="radio" class="field-status" name="status" value="1" title="启用" checked>
+                <input type="radio" class="field-status" name="status" value="0" title="禁用">
+            </div>
+        </div>
+        <div class="layui-form-item role-list-form">
+            {{# layui.each(d.menu_list, function(k, v){ }}
+            <dl class="role-list-form-top">
+                <dt><input type="checkbox" name="auth[]" lay-filter="roleAuth" value="{{v['id']}}" data-parent="0" data-level="1" lay-skin="primary" title="{{v['title']}}"></dt>
+                <dd>
+                    {{# layui.each(v['childs'], function(kk, vv){ }}
+                    <dl>
+                        <dt><input type="checkbox" name="auth[]" lay-filter="roleAuth" value="{{vv['id']}}" data-pid="{{vv['pid']}}" data-level="2" lay-skin="primary" title="{{vv['title']}}"></dt>
+                        <dd>
+                            {{# layui.each(vv['childs'], function(kkk, vvv){ }}
+                            <dl>
+                                <dt><input type="checkbox" name="auth[]" lay-filter="roleAuth" value="{{vvv['id']}}" data-pid="{{vvv['pid']}}" data-level="3" lay-skin="primary" title="{{vvv['title']}}"></dt>
+                                <dd>
+                                    {{# layui.each(vvv['childs'], function(kkkk, vvvv){ }}
+                                    <input type="checkbox" name="auth[]" lay-filter="roleAuth" value="{{vvvv['id']}}" data-pid="{{vvvv['pid']}}" data-level="4" lay-skin="primary" title="{{vvvv['title']}}">
+                                    {{# }); }}
+                                </dd>
+                            </dl>
+                            {{# }); }}
+                        </dd>
+                    </dl>
+                    {{# }); }}
+                </dd>
+            </dl>
+            {{# }); }}
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="hidden" class="field-id" name="id">
+                <button type="submit" class="layui-btn " lay-submit="" lay-filter="formSubmit">提交</button>
+                <a href="javascript:history.go(-1);" class="layui-btn layui-btn-primary ml10"><i class="aicon ai-fanhui"></i>返回</a>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    layui.use(['laytpl', 'element', 'common', 'form'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , admin = layui.admin
+            , tool = layui.common
+            , form = layui.form
+            , laytpl = layui.laytpl;
+        var getTpl = roleForm.innerHTML;
+        var id=layui.router().search.id;
+        tool.ajax({"data":{"id":id},"type":"get"}, function (res) {
+            laytpl(getTpl).render(res.data, function (html) {
+                $('.roleForm').append(html);
+                if(id>0){
+                    tool.assign(res.data.info,'.roleForm');
+                    /* 权限赋值 */
+                    var auth=JSON.parse(res.data.info.auth);
+                    if (auth) {
+                        for(var i in auth) {
+                            $('.role-list-form input[value="'+auth[i]+'"]').prop('checked', true);
+                        }
+                    }
+                }
+                form.render();
+                //监听提交
+                layui.form.on('submit(formSubmit)', function (data) {
+                    tool.ajax({"data": data.field});
+                })
+
+                form.on('checkbox(roleAuth)', function(data) {
+                    var child = $(data.elem).parent('dt').siblings('dd').find('input');
+                    /* 自动选中父节点 */
+                    var check_parent = function (id) {
+                        var self = $('.role-list-form input[value="'+id+'"]');
+                        var pid = self.attr('data-pid') || '';
+                        self.prop('checked', true);
+                        if (pid == '') {
+                            return false;
+                        }
+                        check_parent(pid);
+                    };
+                    /* 自动选中子节点 */
+                    child.each(function(index, item) {
+                        item.checked = data.elem.checked;
+                    });
+                    check_parent($(data.elem).attr('data-pid'));
+                    form.render('checkbox');
+                });
+
+
+
+            })
+        })
+    });
+</script>

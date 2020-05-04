@@ -55,6 +55,8 @@ class Query
     private static $event = [];
     // 读取主库
     protected static $readMaster = [];
+    // 参数绑定2
+    protected $bindTemp = [];
 
     /**
      * 构造函数
@@ -2513,6 +2515,7 @@ class Query
             $sql = $this->builder->select($options);
             // 获取参数绑定
             $bind = $this->getBind();
+            $this->bindTemp = $bind;
             if ($options['fetch_sql']) {
                 // 获取实际执行的SQL语句
                 return $this->connection->getRealSql($sql, $bind);
@@ -2845,6 +2848,16 @@ class Query
         $bind       = $this->bind;
         $this->bind = [];
         return $bind;
+    }
+
+    public function getBind2()
+    {
+        return  $this->bindTemp;
+    }
+
+    public function setBind($bind)
+    {
+        $this->bind = $bind;
     }
 
     /**

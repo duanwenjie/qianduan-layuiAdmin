@@ -43,14 +43,14 @@ html{background-color: #f2f2f2; color: #666;}
 */
 
 .layui-layout-admin .layui-header .layui-nav .layui-nav-child a{color: #333;}
-.layui-layout-admin .layui-side{width: 220px; top: 0; z-index: 1001;}
+.layui-layout-admin .layui-side{width: 188px; top: 0; z-index: 1001;}
 .layui-layout-admin .layui-logo,
 .layui-layout-admin .layui-header .layui-nav .layui-nav-item{height: 50px; line-height: 50px;}
-.layui-layout-admin .layui-logo{position: fixed; left: 0; top: 0; z-index: 1002; width: 220px; height: 49px; padding: 0 15px; box-sizing: border-box; overflow: hidden; font-weight: 300; background-repeat: no-repeat; background-position: center center;}
+.layui-layout-admin .layui-logo{position: fixed; left: 0; top: 0; z-index: 1002; width: 188px; height: 49px; padding: 0 15px; box-sizing: border-box; overflow: hidden; font-weight: 300; background-repeat: no-repeat; background-position: center center;}
 .layui-layout-admin .layui-layout-left,
 .layadmin-pagetabs,
 .layui-layout-admin .layui-body,
-.layui-layout-admin .layui-footer{left: 220px;}
+.layui-layout-admin .layui-footer{left: 188px;}
 .layadmin-pagetabs{position: fixed; top: 50px; right: 0; z-index: 999;}
 .layadmin-pagetabs .layui-breadcrumb{padding: 0 15px;}
 .layui-layout-admin .layui-body{position: fixed; top: 90px; bottom: 0;}
@@ -120,7 +120,7 @@ html{background-color: #f2f2f2; color: #666;}
 
 /* 弹出面板 */
 .layui-layer-admin .layui-layer-title{height: 50px; line-height: 50px; border: none 0; background-color: #20222A; color: #fff;}
-.layui-layer-admin i[close]{position: absolute; padding: 5px; right: 10px; top: 12px; color: #fff; cursor: pointer;}
+.layui-layer-admin i[close]{position: absolute; padding: 5px; right: 10px; top: 12px; color: #000; cursor: pointer;}
 .layui-layer-admin .layui-layer-content{padding: 20px; line-height: 22px;}
 .layui-layer-admin .layui-layer-content cite{font-style: normal; color: #FF5722;}
 
@@ -133,7 +133,7 @@ html{background-color: #f2f2f2; color: #666;}
 
 /* 头部导航 */
 .layui-layout-admin .layui-layout-left{padding: 0 10px;}
-.layui-layout-admin .layui-layout-left .layui-nav-item{margin: 0 20px;}
+.layui-layout-admin .layui-layout-left .layui-nav-item{margin: 0 6px;}
 .layui-layout-admin .layui-input-search{display: inline-block; vertical-align: middle; height: 32px; border: none; cursor: text;}
 .layui-layout-admin .layui-layout-left a{padding: 0;}
 .layui-layout-admin .layui-layout-right{padding: 0;}
@@ -141,26 +141,26 @@ html{background-color: #f2f2f2; color: #666;}
 .layui-header .layui-nav-item:hover{}
 .layui-header .layui-layout-right .layui-badge-dot{margin-left: 11px;}
 .layui-header .layui-nav .layui-this:after,
-.layui-layout-admin .layui-header .layui-nav-bar{top: 0 !important; bottom: auto; height: 3px; background-color: #fff; background-color: rgba(255,255,255,.3);}
+.layui-layout-admin .layui-header .layui-nav-bar{top: 48px !important; bottom: auto; height: 3px; background-color: #fff; background-color: rgba(255,255,255,.3);}
 
 /* 遮罩 */
 .layadmin-body-shade{position: fixed; display: none; left: 0; right: 0; top: 0; bottom: 0; background-color: rgba(0,0,0,.3); z-index: 1000;}
 
 /* 侧边菜单 */
 .layui-side-menu .layui-side-scroll{width: 240px;}
-.layui-side-menu .layui-nav{width: 220px; margin-top: 50px; background: none;}
+.layui-side-menu .layui-nav{width: 188px; margin-top: 50px; background: none;}
 .layui-side-menu .layui-nav .layui-nav-item a{height: 40px; line-height: 40px; padding-left: 45px; padding-right: 30px;}
 .layui-side-menu .layui-nav .layui-nav-item > a{padding-top: 8px; padding-bottom: 8px;}
 .layui-side-menu .layui-nav .layui-nav-item a:hover{background: none;}
 .layui-side-menu .layui-nav .layui-nav-itemed > .layui-nav-child{padding: 5px 0;}
 .layui-side-menu .layui-nav .layui-nav-item .layui-icon{position: absolute; top: 50%; left: 20px; margin-top: -19px;}
 .layui-side-menu .layui-nav .layui-nav-child .layui-nav-child{background: none!important;}
-.layui-side-menu .layui-nav .layui-nav-child .layui-nav-child a{padding-left: 60px}
+.layui-side-menu .layui-nav .layui-nav-child .layui-nav-child a{padding-left: 48px}
 .layui-side-menu .layui-nav .layui-nav-more{right: 15px;}
 
 /* 侧边菜单 - 平板移动设备 */
 @media screen and (max-width: 992px) {
-  .layui-layout-admin .layui-side{transform: translate3d(-220px, 0, 0); -webkit-transform: translate3d(-220px, 0, 0); width: 220px;}
+  .layui-layout-admin .layui-side{transform: translate3d(-188px, 0, 0); -webkit-transform: translate3d(-188px, 0, 0); width: 188px;}
   .layui-layout-admin .layui-layout-left,
   .layadmin-pagetabs,
   .layui-layout-admin .layui-body,
@@ -168,14 +168,14 @@ html{background-color: #f2f2f2; color: #666;}
 }
 
 /* 侧边收缩模式 */
-.layadmin-side-shrink .layui-layout-admin .layui-logo{width: 60px; background-image: url(res/logo.png); /*background-size: 20px;)*/}
+.layadmin-side-shrink .layui-layout-admin .layui-logo{width:48px; background-image: url(res/logo.png); /*background-size: 20px;)*/}
 .layadmin-side-shrink .layui-layout-admin .layui-logo span{display: none;}
-.layadmin-side-shrink .layui-side{left: 0; width: 60px;}
+.layadmin-side-shrink .layui-side{left: 0; width:48px;}
 .layadmin-side-shrink .layui-layout-admin .layui-layout-left,
 .layadmin-side-shrink .layadmin-pagetabs,
 .layadmin-side-shrink .layui-layout-admin .layui-body,
-.layadmin-side-shrink .layui-layout-admin .layui-footer{left: 60px;}
-.layadmin-side-shrink .layui-side-menu .layui-nav{position: static; width: 60px;}
+.layadmin-side-shrink .layui-layout-admin .layui-footer{left:48px;}
+.layadmin-side-shrink .layui-side-menu .layui-nav{position: static; width:48px;}
 .layadmin-side-shrink .layui-side-menu .layui-nav-item{position: static;}
 .layadmin-side-shrink .layui-side-menu .layui-nav-item>a{padding-right: 0;}
 .layadmin-side-shrink .layui-side-menu .layui-nav-item cite,
@@ -187,8 +187,8 @@ html{background-color: #f2f2f2; color: #666;}
 .layadmin-side-spread-sm .layui-layout-admin .layui-layout-left,
 .layadmin-side-spread-sm .layadmin-pagetabs,
 .layadmin-side-spread-sm .layui-layout-admin .layui-body,
-.layadmin-side-spread-sm .layui-layout-admin .layui-footer{left: 0; transform: translate3d(220px, 0, 0); -webkit-transform: translate3d(220px, 0, 0);}
-.layadmin-side-spread-sm .layui-layout-admin .layui-layout-right{transform: translate3d(220px, 0, 0); -webkit-transform: translate3d(220px, 0, 0);}
+.layadmin-side-spread-sm .layui-layout-admin .layui-footer{left: 0; transform: translate3d(188px, 0, 0); -webkit-transform: translate3d(188px, 0, 0);}
+.layadmin-side-spread-sm .layui-layout-admin .layui-layout-right{transform: translate3d(188px, 0, 0); -webkit-transform: translate3d(188px, 0, 0);}
 .layadmin-side-spread-sm .layui-side{transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0);}
 .layadmin-side-spread-sm .layadmin-body-shade{display: block; }
 
@@ -260,7 +260,7 @@ html{background-color: #f2f2f2; color: #666;}
  
 */
 
-.layui-fluid{padding: 15px;}
+.layui-fluid{padding: 10px;}
 .layadmin-header{display: none; height: 50px; line-height: 50px; margin-bottom: 0; border-radius: 0;}
 .layadmin-header .layui-breadcrumb{padding: 0 15px;}
 .layui-card-header{position: relative;}
@@ -296,7 +296,7 @@ html{background-color: #f2f2f2; color: #666;}
 
 /* 快捷方式 */
 .layadmin-shortcut li{text-align: center;}
-.layadmin-shortcut li .layui-icon{display: inline-block; width: 100%; height: 60px; line-height: 60px; text-align: center; border-radius: 2px; font-size: 30px; background-color: #F8F8F8; color: #333; transition: all .3s; -webkit-transition: all .3s;}
+.layadmin-shortcut li .layui-icon{display: inline-block; width: 100%; height:48px; line-height:48px; text-align: center; border-radius: 2px; font-size: 30px; background-color: #F8F8F8; color: #333; transition: all .3s; -webkit-transition: all .3s;}
 .layadmin-shortcut li cite{position: relative; top: 2px; display: block; color: #666; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; font-size: 14px;}
 .layadmin-shortcut li:hover .layui-icon{background-color: #f2f2f2;}
 
@@ -521,6 +521,3 @@ html{background-color: #f2f2f2; color: #666;}
   /* 主体容器 */
   .layui-layout-admin .layui-body .layadmin-tabsbody-item{-webkit-overflow-scrolling: touch; overflow: auto;}
 }
-
-
-

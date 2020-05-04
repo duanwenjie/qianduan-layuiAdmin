@@ -1,0 +1,110 @@
+<div class="layui-fluid">
+    <div class="layui-breadcrumb jy-breadcrumb">
+    </div>
+    <div class="layui-card menuEdit layui-fluid">
+
+    </div>
+</div>
+<script id="menuEdit" type="text/html">
+    <div class="layui-form"  method="post" id="editForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">父级菜单</label>
+            <div class="layui-input-inline">
+                <select name="pid" class="field-pid" type="select" lay-filter="pid"  lay-search>
+                    <option value="0" level="0">顶级菜单</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input field-title" name="title" lay-verify="required" autocomplete="off" placeholder="请输入菜单名称">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图标设置</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input field-icon" id="input-icon" name="icon" lay-verify="" autocomplete="off" placeholder="可自定义或使用系统图标">
+            </div>
+            <i class="" id="form-icon-preview"></i>
+            <a href="javascript:;" title="选择图标" class="layui-btn layui-btn-primary  fl " id="icon">选择图标</a>
+            <div class="layui-form-mid layui-word-aux">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单链接</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input field-url" name="url" lay-verify="required" autocomplete="off" placeholder="请严格按照参考格式填写">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                格式：控制器名/方法名 如：User/login，前端模板路径文件名要和后端控制器方法一致,严格区分大小写</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态设置</label>
+            <div class="layui-input-inline">
+                <input type="radio" class="field-status" name="status" value="1" title="启用" checked>
+                <input type="radio" class="field-status" name="status" value="0" title="禁用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单显示</label>
+            <div class="layui-input-inline">
+                <input type="radio" class="field-nav" name="nav" value="1" title="是" checked>
+                <input type="radio" class="field-nav" name="nav" value="0" title="否">
+            </div>
+            <div class="layui-form-mid layui-word-aux">选择是则前台显示菜单</div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="hidden" class="field-id" name="id">
+                <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formSubmit">提交</button>
+                <a href="javascript:history.go(-1);" class="layui-btn layui-btn-primary ml10"><i class="aicon ai-fanhui"></i>返回</a>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    layui.use(['laytpl', 'element', 'common', 'form'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , admin = layui.admin
+            , tool = layui.common
+            , form = layui.form
+            , laytpl = layui.laytpl;
+        var getTpl = menuEdit.innerHTML;
+        var id=layui.router().search.id;
+        tool.ajax({"data":{"id":id},"type":"get"}, function (res) {
+            laytpl(getTpl).render(res.data, function (html) {
+                $('.menuEdit').append(html);
+                element.render('breadcrumb');
+                $(".menuEdit select[name='pid'] option").eq(0).after(res.data.menu);
+                //监听提交
+                layui.form.on('submit(formSubmit)', function (data) {
+                    tool.ajax({"data": data.field});
+                })
+                $("#icon").click(
+                    function () {
+                        $.get("/src/views/icon/list.html", function(h){
+                            layer.open({
+                                type: 5,
+                                title: '选择图标',
+                                shade: [0.5, '#000'],
+                                area: ['900px', '700px'],
+                                shadeClose: false,
+                                closeBtn: 1,
+                                anim: 2,
+                                content: h,
+                                cancel:function () {
+                                }
+                            });
+                        })
+                    }
+                )
+                form.render();
+            })
+
+        })
+    });
+</script>

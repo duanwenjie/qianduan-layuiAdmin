@@ -55,6 +55,8 @@ class ToolService
                 //db对象处理
                $db->page($param['pageNumber'], $param['pageData']);
                $data=$db->select();
+               $bind=$db->getBind2();
+               $total->setBind($bind);
                if(empty($data)){
                    $res['list']=[];
                    $res['total']=$total->count();

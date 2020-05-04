@@ -58,10 +58,20 @@ layui.define('view', function(exports){
         ,shade: 0.1
         ,shadeClose: true
         ,skin: 'layui-anim layui-anim-rl layui-layer-adminRight'
-        ,area: '300px'
+        ,area: '600px'
       }, options));
     }
-    
+    ,cacheConfig:function(res){
+        if(res.code==1){
+            for (var i in res.data) {
+                var k=res.data[i];
+                layui.data(setter.tableName, {
+                    key: i
+                    ,value: k
+                });
+            }
+        }
+    }
     //发送验证码
     ,sendAuthCode: function(options){
       options = $.extend({

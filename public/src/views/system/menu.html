@@ -1,0 +1,228 @@
+<div class="layui-fluid">
+   <div class="layui-breadcrumb jy-breadcrumb">
+    </div>
+    <div class="layui-card SystemMenu ">
+        <div class="layui-card-body ">
+            <a href="/#/System/menuAdd/id=0" type="button"  class="layui-btn">新增菜单</a>
+        </div>
+    </div>
+</div>
+<script id="menu" type="text/html">
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            {{# layui.each(d.tabData.menu, function(k, vo){ }}
+            {{# if(k==0){ }}
+            <li class="layui-this">
+                {{# }else{ }}
+            <li>
+                {{# } }}
+                <a href="javascript:;">{{vo['title']}}</a>
+            </li>
+            {{# }); }}
+        </ul>
+        <div class="layui-tab-content page-tab-content">
+            {{# layui.each(d.menu_list, function(k, v){ }}
+            <div class="layui-tab-item layui-form menu-dl  {{# if(k==0){ }} layui-show {{# } }} ">
+                <form class="page-list-form">
+                    <dl class="menu-dl1 menu-hd mt10">
+                        <dt>菜单名称</dt>
+                        <dd>
+                            <span class="hd">排序</span>
+                            <span class="hd2">状态</span>
+                            <span class="hd3">操作</span>
+                        </dd>
+                    </dl>
+                    {{# layui.each(v['childs'], function(kk, vv){ }}
+                    {{# kk=1; }}
+                    <dl class="menu-dl1">
+                        <dt>
+                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                                <span>{{vv['title']}}</span><i
+                                    class="layui-icon">&#xe626;</i></div>
+                            <input type="text" class="menu-sort j-ajax-input" name="sort[{{kk}}]"
+                                   onkeyup="value=value.replace(/[^\d]/g,'')" value="{{vv['sort']}}"
+                                   data-value="{{vv['sort']}}"
+                                   data-href="/index/System/sort/id/{{vv['id']}}">
+                            <input type="checkbox" name="status" value="{{vv['status']}}"
+                                   {{# if(vv['status']==1){ }}checked=""{{# } }}
+                            lay-skin="switch" lay-filter="switchStatus" lay-text="启用|禁用"
+                            data-href="/index/System/status/id/{{vv['id']}}">
+                            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>
+                                {{# if(vv['status']==1){ }}启用{{# }else{ }} 禁用 {{# } }}
+                            </em><i></i></div>
+                            <div class="menu-btns">
+                                <a href="/#/System/menuEdit/id={{vv['id']}}" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+                                <a href="/#/System/menuAdd/id={{vv['id']}}" title="添加子菜单"><i class="layui-icon">&#xe654;</i></a>
+                                <a href="javascript:;" jy-act='ajax' jy-href="/index/System/del/id/{{vv['id']}}" jy-confirm="删除后无法恢复是否删除?" ><i class="layui-icon">&#xe640;</i></a>
+                            </div>
+                        </dt>
+                        <dd>
+                            {{# kk++; }}
+                            {{# layui.each(vv['childs'], function(kkk, vvv){ }}
+                            <dl class="menu-dl2">
+                                <dt>
+                                    <input type="checkbox" name="id[{{kk}}]" value="{{vvv['id']}}" class="checkbox-ids"
+                                           lay-skin="primary" title="{{vvv['title']}}">
+                                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                                        <span>{{vvv['title']}}</span><i class="layui-icon">&#xe626;</i></div>
+                                    <input type="text" class="menu-sort j-ajax-input" name="sort[{{kk}}]"
+                                           onkeyup="value=value.replace(/[^\d]/g,'')" value="{{vvv['sort']}}"
+                                           data-value="{{vvv['sort']}}" data-href="/index/System/sort/id/{{vvv['id']}}">
+                                    <input type="checkbox" name="status" value="{{vvv['status']}}"
+                                           {{# if(vvv['status']==1){ }}checked=""{{# } }}
+                                    lay-skin="switch" lay-filter="switchStatus" lay-text="启用|禁用"
+                                    data-href="/index/System/status/id/{{vvv['id']}}">
+                                    <div class="layui-unselect layui-form-switch layui-form-onswitch"
+                                         lay-skin="_switch"><em>
+                                        {{# if(vvv['status']==1){ }}启用{{# }else{ }} 禁用 {{# } }}
+                                    </em><i></i></div>
+                                    <div class="menu-btns">
+                                        <a href="/#/System/menuEdit/id={{vvv['id']}}" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+                                        <a href="/#/System/menuAdd/id={{vvv['id']}}" title="添加子菜单"><i class="layui-icon">&#xe654;</i></a>
+                                        <a href="javascript:;" jy-act='ajax' jy-href="/index/System/del/id/{{vvv['id']}}" jy-confirm="删除后无法恢复是否删除?" ><i class="layui-icon">&#xe640;</i></a>
+                                    </div>
+                                </dt>
+                                {{# kk++; }}
+                                {{# layui.each(vvv['childs'], function(kkkk, vvvv){ }}
+                                {{# kk++; }}
+                                <dd>
+                                    <input type="checkbox" name="id[{{kk}}]" value="{{vvvv['id']}}" class="checkbox-ids"
+                                           lay-skin="primary" title="{{vvvv['title']}}">
+                                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                                        <span>{{vvvv['title']}}</span><i class="layui-icon">&#xe626;</i></div>
+                                    <input type="text" class="menu-sort j-ajax-input" name="sort[{{kk}}]"
+                                           onkeyup="value=value.replace(/[^\d]/g,'')" value="{{vvvv['sort']}}"
+                                           data-value="{{vvvv['sort']}}"
+                                           data-href="/index/System/sort/id/{{vvvv['id']}}">
+                                    <input type="checkbox" name="status" value="{{vvvv['status']}}"
+                                           {{# if(vvvv['status']==1){ }}checked=""{{# } }}
+                                    lay-skin="switch" lay-filter="switchStatus" lay-text="启用|禁用"
+                                    data-href="/index/System/status/id/{{vvvv['id']}}">
+                                    <div class="layui-unselect layui-form-switch layui-form-onswitch"
+                                         lay-skin="_switch"><em>
+                                        {{# if(vvvv['status']==1){ }}启用{{# }else{ }} 禁用 {{# } }}
+                                    </em><i></i></div>
+                                    <div class="menu-btns">
+                                        <a href="/#/System/menuEdit/id={{vvvv['id']}}" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+                                        <a href="/#/System/menuAdd/id={{vvvv['id']}}" title="添加子菜单"><i class="layui-icon">&#xe654;</i></a>
+                                        <a href="javascript:;" jy-act='ajax' jy-href="/index/System/del/id/{{vvvv['id']}}" jy-confirm="删除后无法恢复是否删除?" ><i class="layui-icon">&#xe640;</i></a>
+                                    </div>
+                                </dd>
+                                {{# }); }}
+                            </dl>
+                            {{# }); }}
+                        </dd>
+                    </dl>
+                    {{# kk++; }}
+                    {{# }); }}
+                </form>
+            </div>
+            {{# }); }}
+            <div class="layui-tab-item layui-form menu-dl">
+                <form class="page-list-form">
+                    <dl class="menu-dl1 menu-hd mt10">
+                        <dt>模块名称</dt>
+                        <dd>
+                            <span class="hd">排序</span>
+                            <span class="hd2">状态</span>
+                            <span class="hd3">操作</span>
+                        </dd>
+                    </dl>
+                    {{# layui.each(d.menu_list, function(k, v){ }}
+                    <dl class="menu-dl1">
+                        <dt>
+                            <input type="checkbox" name="id[{{k}}]" class="checkbox-ids" value="{{v['id']}}"
+                                   lay-skin="primary"
+                                   title="{{v['title']}}">
+                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                                <span>{{v['title']}}</span><i
+                                    class="layui-icon">&#xe626;</i></div>
+                            <input type="text" class="layui-input j-ajax-input menu-sort" name="sort[{{k}}]"
+                                   onkeyup="value=value.replace(/[^\d]/g,'')" value="{{v['sort']}}"
+                                   data-value="{{v['sort']}}"
+                                   data-href="/index/System/sort/id/{{v['id']}}">
+
+                            <input type="checkbox" name="status" value="{{v['status']}}"
+                                   {{# if(v['status']==1){ }}checked=""{{# } }}
+                            lay-skin="switch" lay-filter="switchStatus" lay-text="启用|禁用"
+                            data-href="/index/System/status/id/{{v['id']}}">
+                            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>
+                                {{# if(v['status']==1){ }}启用{{# }else{ }} 禁用 {{# } }}
+                            </em><i></i></div>
+                            <div class="menu-btns">
+                                <a href="/#/System/menuEdit/id={{v['id']}}" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+                                <a href="/#/System/menuAdd/id={{v['id']}}" title="添加子菜单"><i class="layui-icon">&#xe654;</i></a>
+                                <a href="javascript:;" jy-act='ajax' jy-href="/index/System/del/id/{{v['id']}}" jy-confirm="删除后无法恢复是否删除?" ><i class="layui-icon">&#xe640;</i></a>
+                            </div>
+                        </dt>
+                    </dl>
+                    {{# }); }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+</script>
+<script>
+    layui.use(['laytpl', 'element', 'common', 'form'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , admin = layui.admin
+            , tool = layui.common
+            , form = layui.form
+            , laytpl = layui.laytpl;
+        var getTpl = menu.innerHTML;
+        /**
+         * input编辑更新
+         * @attr data-value 修改前的值
+         * @attr data-href 提交地址
+         */
+        $('.SystemMenu').on('focusout', '.j-ajax-input', function () {
+            var that = $(this), _val = that.val();
+            if (_val == '') return false;
+            if (that.attr('data-value') == _val) return false;
+            if (!that.attr('data-href')) {
+                layer.alert('请设置data-href参数');
+                return false;
+            }
+            $.post(that.attr('data-href'), {val: _val}, function (res) {
+                if (res.code == 1) {
+                    that.attr('data-value', _val);
+                }
+            });
+        });
+        $('.SystemMenu').on('click',"[jy-act='ajax']",function () {
+            var that=$(this);
+            if($(this).attr('jy-confirm')){
+                layer.confirm(that.attr('jy-confirm'),function () {
+                    tool.ajax({"url":that.attr('jy-href')});
+                })
+            }else{
+                tool.ajax({"url":that.attr('jy-href')});
+            }
+        });
+        tool.ajax({"url": "/index/System/Menu"}, function (res) {
+            laytpl(getTpl).render(res.data, function (html) {
+                $('.SystemMenu').append(html);
+                element.render('breadcrumb');
+                form.render();
+                /**
+                 * 通用状态设置开关
+                 * @attr data-href 请求地址
+                 */
+                form.on('switch(switchStatus)', function (data) {
+                    var that = $(this), status = 0;
+                    if (!that.attr('data-href')) {
+                        layer.msg('请设置data-href参数');
+                        return false;
+                    }
+                    if (this.checked) {
+                        status = 1;
+                    }
+                    $.get(that.attr('data-href'), {val: status}, function (res) {
+                    });
+                });
+            })
+        })
+    });
+</script>

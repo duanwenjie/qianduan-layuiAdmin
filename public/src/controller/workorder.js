@@ -32,7 +32,7 @@ layui.define(['table', 'form', 'element'], function(exports){
     ,page: true
     ,limit: 10
     ,limits: [10, 15, 20, 25, 30]
-    ,text: '对不起，加载出现异常！'
+    ,text:{none: '暂无相关数据!' }
     ,done: function(){
       element.render('progress');
     }

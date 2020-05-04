@@ -61,7 +61,7 @@ class ExcelService
             exit;
         }catch (Exception $e){
             trace($e->getMessage().',line=' . __LINE__, 'error');
-            exit_json('000000',$e->getMessage());
+            exitJson('000000',$e->getMessage());
         }
     }
 
@@ -113,7 +113,7 @@ class ExcelService
             $objWriter->save($excelFileName);
         }catch (Exception $e){
             trace($e->getMessage().',line=' . __LINE__, 'error');
-            exit_json('000000',$e->getMessage());
+            exitJson('000000',$e->getMessage());
         }
     }
 
@@ -174,7 +174,7 @@ class ExcelService
            return $excelData;
        }catch (Exception $e){
            trace($e->getMessage().',line=' . __LINE__, 'error');
-           exit_json('000000',$e->getMessage());
+           exitJson('000000',$e->getMessage());
        }
     }
 

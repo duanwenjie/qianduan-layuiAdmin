@@ -1,0 +1,250 @@
+<!--<link rel="stylesheet" href="/static/layui/css/layui.css">-->
+<div class="layui-card">
+<div class="layui-fluid">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a href="">首页</a>
+        <a href="/#/user/index">Tba标签&进度条</a>
+        <a><cite>正文</cite></a>
+    </div>
+    <div class="layui-card" id="component-tabs" lay-filter="tab">
+        <div class="layui-card-body">
+            <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-id="11">网站设置</li>
+                    <li lay-id="22">用户管理</li>
+                    <li lay-id="33">权限分配</li>
+                    <li lay-id="44">商品管理</li>
+                    <li lay-id="55">订单管理</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">内容:网站设置</div>
+                    <div class="layui-tab-item">内容:用户管理</div>
+                    <div class="layui-tab-item">内容:权限分配</div>
+                    <div class="layui-tab-item">内容:商品管理</div>
+                    <div class="layui-tab-item">内容:订单管理</div>
+                </div>
+            </div>
+            <div class="layui-btn-container">
+                <button class="layui-btn site-demo-active" data-type="tabAdd">新增一个项</button>
+                <button class="layui-btn site-demo-active" data-type="tabDelete">删除：用户管理</button>
+                <button class="layui-btn site-demo-active" data-type="tabChange">切换到：权限分配</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-card">
+        <div>
+            <div class="layui-progress layui-progress-big" style="width: 50%;margin-bottom: 20px" lay-filter="demo-progress" lay-showPercent="true">
+                <div class="layui-progress-bar" lay-percent="0%"></div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" placeholder="请输入tab标题" id="title">
+                </div>
+                <div>
+                    <button class="layui-btn layui-btn"  lay-submit lay-filter="fuzhi">添加标签</button>
+                    <button class="layui-btn layui-btn"  lay-submit lay-filter="shousuo">展开|收缩</button>
+                    <button class="layui-btn layui-btn"  lay-submit lay-filter="quanping">全屏|收屏</button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" lay-verify="required|number" placeholder="请输入进度百分比" id="progress">
+                </div>
+                <div>
+                    <button class="layui-btn layui-btn-info"  lay-submit lay-filter="progress">添加进度</button>
+                    <button class="layui-btn layui-btn-info"  lay-submit lay-filter="loading">模拟Loading</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-card">
+        <div>
+            <div>
+                <button class="layui-btn layui-btn-info"  lay-submit lay-filter="popR">右侧弹窗</button>
+                <button class="layui-btn layui-btn-info"  lay-submit lay-filter="pop">弹窗</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-card">
+        <div>
+            <!--<script type="text/html" template lay-url="index/User/getUser" lay-type="post" lay-done=" // console.log(d);"-->
+            <script type="text/html" template lay-url="index/User/getUser" lay-type="post" lay-done="layui.data.sendParams(d);"
+                    lay-data="{id: '{{ layui.router().search.id }}', type: 1}">
+                <!-- 动态模板碎片 -->
+                测试人员：{{ d.data.name }}
+            </script>
+        </div>
+    </div>
+
+</div>
+</div>
+<div class="layui-footer">
+    <!-- 底部固定区域 -->
+    <a style=""><script type="text/html" template>当前 layuiAdmin 的版本是：{{ layui.admin.v }} | 路由地址：{{ layui.router().href }}</script></a>
+</div>
+
+
+
+
+<script>
+    layui.use(['admin', 'table', 'form','toolJ','element','laytpl'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , toolJ = layui.toolJ
+            , laytpl = layui.laytpl
+            , form = layui.form
+            , element = layui.element
+            ,router = layui.router();
+
+        element.render();
+
+        element.on('tab(component-tabs-brief)', function(obj){
+            layer.msg(obj.index + '：' + this.innerHTML);
+        });
+
+        /* 触发事件 */
+        var active = {
+            tabAdd: function(title){
+//                var config = layui.setter;
+//                console.log(config);return false;
+//                console.log(layui.router());return false;
+                /* 新增一个Tab项 */
+                element.tabAdd('demo', {
+                    title: (title != '' && typeof title != 'object') ? '新选项'+title : ('新选项'+ (Math.random()*1000|0) /* 用于演示 */)
+                    ,content: (title != '' && typeof title != 'object') ? '内容：'+title : ('内容：'+ (Math.random()*1000|0))
+                    ,id: new Date().getTime() /* 实际使用一般是规定好的id，这里以时间戳模拟下 */
+                });
+//                element.render('nav','tab');
+            }
+            ,tabDelete: function(othis,obj,obj2){
+                /* 删除指定Tab项 */
+                element.tabDelete('demo', '22');
+                othis.addClass('layui-btn-disabled');
+//                console.log(othis); console.log(obj); console.log(obj2);return false;
+            }
+            ,tabChange: function(){
+                /* 切换到指定Tab项 */
+                element.tabChange('demo', '33');
+            }
+        };
+
+        $('#component-tabs .site-demo-active').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+//            active[type] ? active[type].call(this, othis) : '';
+            active[type] ? active[type].call(this,othis,11,22) : '';
+        });
+
+        /* Hash地址的定位 */
+        var layid = router.hash.replace(/^#layid=/, '');
+        layid && element.tabChange('component-tabs-hash', layid);
+
+        element.on('tab(component-tabs-hash)', function(elem){
+            location.hash = '/'+ layui.router().path.join('/') + '#layid=' + $(this).attr('lay-id');
+        });
+
+
+        /*== 分割线 ==*/
+        form.on('submit(fuzhi)',function () {
+            var title = $('#title').val();
+            active['tabAdd'].call('',title);
+        });
+
+        /*== 进度条 ==*/
+        form.on('submit(progress)',function () {
+            var progress = $('#progress').val();
+            if (progress === '') return false;
+            var reg=/^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 ，判断正整数用/^[1-9]+[0-9]*]*$/
+            if(!reg.test(progress)){
+                layer.error('请输入数字');
+                return false;
+            }
+            element.progress('demo-progress', progress+'%');
+        });
+
+        /*== 模拟loding ==*/
+        form.on('submit(loading)',function () {
+            var progress = 0, timer = setInterval(function () {
+                progress = progress + Math.random()*10|0;
+                if (progress > 100){
+                    progress = 100;
+                    clearInterval(timer);
+                }
+                element.progress('demo-progress', progress+'%');
+            },500*Math.random());
+        });
+
+        /*== 展开|收缩 ==*/
+        var status = '';
+        form.on('submit(shousuo)',function () {
+            admin.sideFlexible(status);
+            if (status == ''){
+                status = 'spread';
+            }else {
+                status = '';
+            }
+        });
+
+        form.on('submit(quanping)',function () {
+            if (status == ''){
+                status = 'spread';
+                admin.fullScreen();
+            }else {
+                status = '';
+                admin.exitScreen()
+            }
+        });
+
+        form.on('submit(pop)',function () {
+
+//            admin.about();
+
+            admin.popup({
+                id: 'LAY-popup-test1'
+                ,success: function(){
+                    view(this.id).render('system/about', {
+                        id: 123 //这里的 id 值你可以在一些事件中动态获取（如 table 模块的编辑）
+                    });
+                }
+            });
+        });
+
+        form.on('submit(popR)',function () {
+            admin.popupRight({
+                id: 'LAY-popup-right-new1' //定义唯一ID，防止重复弹出
+                ,success: function(){
+                    //将 views 目录下的某视图文件内容渲染给该面板
+                    layui.view(this.id).render('/user/login');
+                }
+            });
+        });
+
+
+    });
+
+
+    //定义一个 lay-done 对应的全局方法，以供动态模板执行
+    layui.data.sendParams = function(params){
+        console.log(params); //得到传递过来的 id 参数（或其他参数）值
+
+        //通过得到的参数值，做一些你想做的事
+        //…
+
+        //若需用到 layui 组件，layui.use 需写在该全局方法里面，如：
+        layui.use(['table'], function(){
+            var table = layui.table;
+            table.render({
+                elem: ''
+                ,url: 'url?id='+ params.id
+            });
+        });
+    };
+
+
+</script>
+
+

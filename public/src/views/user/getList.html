@@ -5,7 +5,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">用户名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="username" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="cn_name" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -38,10 +38,11 @@
         //用户管理
         table.render({
             elem: '#LAY-list'
-            ,url: './json/useradmin/webuser.js' //模拟接口
+//            ,url: './json/useradmin/webuser.js' //模拟接口
+            ,url: '/index/User/getList' //模拟接口
             ,cols: [[
                 {field: 'id', width: 100, title: 'ID'}
-                ,{field: 'username', title: '用户名', minWidth: 100}
+                ,{field: 'cn_name', title: '用户名', minWidth: 100}
                 ,{field: 'role', title: '角色'}
                 ,{field: 'status', title: '状态'}
                 ,{field: 'ctime', title: '创建时间'}
@@ -49,7 +50,7 @@
             ]]
             ,page: true
             ,limit: 30
-            ,height: 'full-320'
+//            ,height: 'full-320'
             ,text: '对不起，加载出现异常！'
         });
         //监听行内操作

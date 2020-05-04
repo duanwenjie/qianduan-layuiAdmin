@@ -1,19 +1,54 @@
 {
-  "code": 0
-  ,"msg": ""
-  ,"data": [{
-    "name": "set"
-    ,"title": "基础设置"
-    ,"icon": "layui-icon-set"
-    ,"list": [{
-      "name": "set-user"
-      ,"title": "用户设置"
-    ,"jump": "user/getList"
+    "code":0,
+    "msg":"",
+    "data":[
+    {
+        "name":"set",
+        "title":"基础设置",
+        "icon":"layui-icon-set",
+        "spread":true,
+        "list":[
+            {
+                "name":"set-user",
+                "title":"用户设置",
+                "jump":"",
+                "list":[
+                    {
+                        "name":"set-user-1",
+                        "title":"三级界面",
+                        "jump":"user/getList"
+                    },
+                    {
+                        "name":"set-user-2",
+                        "title":"进度条",
+                        "jump":"user/index"
+                    }
+                    ]
+            },
+            {
+                "name":"set-user2",
+                "title":"其他设置",
+                "jump":"user/list"
+            }
+        ]
     },
     {
-      "name": "set-user2"
-      ,"title": "用户设置2"
-      ,"jump": "user/list"
-    }]
-  }]
+        "name":"layui-module",
+        "title":"layui模块",
+        "icon":"layui-icon-home",
+        "spread":true,
+        "list":[
+            {
+                "name":"layui-module-progress",
+                "title":"进度条|TAB",
+                "jump":"module/index"
+            },
+            {
+                "name":"layui-module-table",
+                "title":"表格|TABLE",
+                "jump":"module/table"
+            }
+        ]
+    }
+]
 }

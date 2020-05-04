@@ -6,7 +6,7 @@ use think\Db;
 
 /**
  * 下载导出
- * @author xjy
+ * @author dwj
  */
 class DownService
 {
@@ -200,9 +200,9 @@ class DownService
         self::$fp = null;
         \app\api\model\ImportexportModel::dbUpdateImportexport(self::$exportId, $update);
         if ($res['code'] == 1) {
-            exit_json();
+            exitJson();
         } else {
-            exit_json($res['code'], $res['msg']);
+            exitJson($res['code'], $res['msg']);
         }
     }
 

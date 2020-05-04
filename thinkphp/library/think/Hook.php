@@ -114,7 +114,7 @@ class Hook
      */
     public static function exec($class, $tag = '', &$params = null, $extra = null)
     {
-        App::$debug && Debug::remark('behavior_start', 'time');
+        //App::$debug && Debug::remark('behavior_start', 'time');
 
         $method = Loader::parseName($tag, 1, false);
 
@@ -138,8 +138,8 @@ class Hook
         }
 
         if (App::$debug) {
-            Debug::remark('behavior_end', 'time');
-            Log::record('[ BEHAVIOR ] Run ' . $class . ' @' . $tag . ' [ RunTime:' . Debug::getRangeTime('behavior_start', 'behavior_end') . 's ]', 'info');
+            //Debug::remark('behavior_end', 'time');
+            //Log::record('[ BEHAVIOR ] Run ' . $class . ' @' . $tag . ' [ RunTime:' . Debug::getRangeTime('behavior_start', 'behavior_end') . 's ]', 'info');
         }
 
         return $result;
